@@ -1,0 +1,21 @@
+﻿@page "/"
+@using RichTextEditor.Data 
+@using Syncfusion.Blazor.RichTextEditor
+
+<SfRichTextEditor>
+      <RichTextEditorEvents OnImageUploadSuccess="@OnImageUploadSuccessHandler"></RichTextEditorEvents>
+    <RichTextEditorImageSettings SaveUrl="api/Home/Save" Path="./Images/" />
+</SfRichTextEditor>
+
+@code{
+    public string[] header { get; set; }
+    public void OnImageUploadSuccessHandler(ImageSuccessEventArgs args)
+    {
+        var headers = args.Response.Headers.ToString();
+        header = headers.Split("name: ");
+        header = header[1].Split("\r");
+
+        // Update the modified image name to display a image in the editor.
+        args.File.Name = header[0];
+    }
+}
